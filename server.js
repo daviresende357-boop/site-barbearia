@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
+const mongoose = require("mongoose");
 
 const app = express();
 app.use(cors());
@@ -8,19 +8,20 @@ app.use(express.json());
 
 const PORT = 3000;
 
-// Ler agendamentos
-function lerDados() {
-  const data = fs.readFileSync("agendamentos.json");
-  return JSON.parse(data);
-}
+// CONEXÃO COM MONGODB
+mongoose.connect("mongodb+srv://daviresende357_db_user:xfkf0WDKUFWytnXM@cluster0.j6iqe2k.mongodb.net/barbearia")
+  .then(() => console.log("MongoDB conectado"))
+  .catch(err => console.log(err));
 
-// Salvar agendamentos
-function salvarDados(dados) {
-  fs.writeFileSync("agendamentos.json", JSON.stringify(dados, null, 2));
-}
+// MODELO
+const Agendamento = mongoose.model("Agendamento", {
+  nome: String,
+  data: String,
+  hora: String
+});
 
-// Rota para agendar
-app.post("/agendar", (req, res) => {
+// ROTA AGENDAR
+app.post("/agendar", async (req, res) => {
   const { nome, data, hora } = req.body;
 
   const dia = new Date(data).getDay();
@@ -34,25 +35,23 @@ app.post("/agendar", (req, res) => {
     return res.status(400).json({ erro: "Horário fora do funcionamento" });
   }
 
-  let agendamentos = lerDados();
-
-  const existe = agendamentos.find(a => a.data === data && a.hora === hora);
+  const existe = await Agendamento.findOne({ data, hora });
   if (existe) {
     return res.status(400).json({ erro: "Horário já ocupado" });
   }
 
-  agendamentos.push({ nome, data, hora });
-  salvarDados(agendamentos);
+  const novo = new Agendamento({ nome, data, hora });
+  await novo.save();
 
   res.json({ sucesso: true });
 });
 
-// Listar agendamentos
-app.get("/agendamentos", (req, res) => {
-  const dados = lerDados();
+// LISTAR
+app.get("/agendamentos", async (req, res) => {
+  const dados = await Agendamento.find();
   res.json(dados);
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
