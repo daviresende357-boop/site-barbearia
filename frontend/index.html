@@ -1,0 +1,329 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barbearia Estilo Fino - Agendamento</title>
+    <style>
+      :root {
+        --bg: #f6f2ea;
+        --surface: #fffaf1;
+        --text: #1f1a14;
+        --muted: #0f0a05;
+        --primary: #b28643;
+        --primary-dark: #8e672e;
+        --border: #dbc8ae;
+        --success-bg: #e5f7ea;
+        --success-text: #1d7b3e;
+        --error-bg: #fdebec;
+        --error-text: #b3261e;
+        --alert-bg: #fff3e0;
+        --alert-text: #d97706;
+        --shadow: 0 18px 40px rgba(58, 38, 18, 0.12);
+      }
+
+      html[data-theme='dark'] {
+        --bg: #121212;
+        --surface: #1d1d1d;
+        --text: #f6f1e8;
+        --muted: #c6bcad;
+        --primary: #d9a85c;
+        --primary-dark: #b5853d;
+        --border: #3b342b;
+        --success-bg: #173223;
+        --success-text: #92e0af;
+        --error-bg: #3d1f20;
+        --error-text: #f2aaaa;
+        --alert-bg: #3a2a14;
+        --alert-text: #f5b455;
+        --shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: radial-gradient(circle at top right, rgba(178, 134, 67, 0.16), transparent 42%),
+          radial-gradient(circle at bottom left, rgba(178, 134, 67, 0.1), transparent 45%),
+          var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      .container {
+        width: min(960px, 92%);
+        margin: 48px auto;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .header {
+        padding: 28px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .title {
+        margin: 0;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+      }
+
+      .subtitle {
+        margin: 8px 0 0;
+        color: var(--muted);
+      }
+
+      .theme-toggle {
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        border-radius: 12px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .panel {
+        padding: 28px;
+      }
+
+      .panel + .panel {
+        border-left: 1px solid var(--border);
+      }
+
+      .info-list {
+        margin: 18px 0 0;
+        padding: 0;
+        list-style: none;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .info-list strong {
+        color: var(--text);
+      }
+
+      .form {
+        display: grid;
+        gap: 14px;
+      }
+
+      .form label {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .form input {
+        width: 100%;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        border-radius: 12px;
+        padding: 12px;
+        font-size: 1rem;
+      }
+
+      .form button {
+        margin-top: 8px;
+        border: none;
+        border-radius: 12px;
+        background: var(--primary);
+        color: #1b140a;
+        font-size: 1rem;
+        font-weight: 700;
+        padding: 12px 14px;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.2s ease;
+      }
+
+      .form button:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+      }
+
+      .mensagem {
+        margin-top: 14px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-weight: 600;
+        display: none;
+      }
+
+      .mensagem.sucesso {
+        display: block;
+        background: var(--success-bg);
+        color: var(--success-text);
+      }
+
+      .mensagem.erro {
+        display: block;
+        background: var(--error-bg);
+        color: var(--error-text);
+      }
+
+      .mensagem.alerta {
+        display: block;
+        background: var(--alert-bg);
+        color: var(--alert-text);
+      }
+
+      @media (max-width: 860px) {
+        .content {
+          grid-template-columns: 1fr;
+        }
+
+        .panel + .panel {
+          border-left: none;
+          border-top: 1px solid var(--border);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <div>
+          <h1 class="title">Barbearia Estilo Fino</h1>
+          <p class="subtitle">Agendamento premium com atendimento exclusivo</p>
+        </div>
+        <button id="themeToggle" class="theme-toggle" type="button">Alternar tema</button>
+      </header>
+
+      <section class="content">
+        <article class="panel">
+          <h2>Informações</h2>
+          <ul class="info-list">
+            <li><strong>Nome:</strong> Barbearia Estilo Fino</li>
+            <li><strong>Preço:</strong> R$25</li>
+            <li><strong>Segunda a Sexta:</strong> 08-11 e 13-20</li>
+            <li><strong>Sábado e Domingo:</strong> Fechado</li>
+          </ul>
+        </article>
+
+        <article class="panel">
+          <h2>Agendar horário</h2>
+          <form id="agendamentoForm" class="form">
+            <div>
+              <label for="nome">Nome do cliente</label>
+              <input id="nome" name="nome" type="text" required minlength="2" />
+            </div>
+
+            <div>
+              <label for="data">Data</label>
+              <input id="data" name="data" type="date" required />
+            </div>
+
+            <div>
+              <label for="hora">Hora</label>
+              <input id="hora" name="hora" type="time" required />
+            </div>
+
+            <button type="submit">Agendar</button>
+            <div id="mensagem" class="mensagem"></div>
+          </form>
+        </article>
+      </section>
+    </main>
+
+    <script>
+       const API_URL = "https://site-barbearia-0m5y.onrender.com";
+      const html = document.documentElement;
+      const themeToggle = document.getElementById('themeToggle');
+      const form = document.getElementById('agendamentoForm');
+      const mensagemEl = document.getElementById('mensagem');
+
+      function aplicarTemaInicial() {
+        const temaSalvo = localStorage.getItem('tema-barbearia') || 'light';
+        html.setAttribute('data-theme', temaSalvo);
+      }
+
+      function alternarTema() {
+        const temaAtual = html.getAttribute('data-theme');
+        const novoTema = temaAtual === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', novoTema);
+        localStorage.setItem('tema-barbearia', novoTema);
+      }
+
+      function mostrarMensagem(texto, tipo) {
+        mensagemEl.textContent = texto;
+        mensagemEl.className = `mensagem ${tipo}`;
+      }
+
+      function horarioDentroDoFuncionamento(hora) {
+        const [horas, minutos] = hora.split(':').map(Number);
+        const totalMinutos = horas * 60 + minutos;
+        const manhaInicio = 8 * 60;
+        const manhaFim = 11 * 60;
+        const tardeInicio = 13 * 60;
+        const tardeFim = 20 * 60;
+
+        return (totalMinutos >= manhaInicio && totalMinutos <= manhaFim) ||
+          (totalMinutos >= tardeInicio && totalMinutos <= tardeFim);
+      }
+
+      async function enviarAgendamento(event) {
+        event.preventDefault();
+
+        const nome = document.getElementById('nome').value.trim();
+        const data = document.getElementById('data').value;
+        const hora = document.getElementById('hora').value;
+
+        if (!nome || !data || !hora) {
+          mostrarMensagem('\u26A0\uFE0F Preencha todos os campos!', 'alerta');
+          return;
+        }
+
+        const dataSelecionada = new Date(`${data}T00:00:00`);
+        const diaSemana = dataSelecionada.getDay();
+
+        if (diaSemana === 0 || diaSemana === 6) {
+          mostrarMensagem('\u274C Não atendemos sábado e domingo!', 'erro');
+          return;
+        }
+
+        if (!horarioDentroDoFuncionamento(hora)) {
+          mostrarMensagem('\u274C Horário fora do funcionamento!', 'erro');
+          return;
+        }
+
+        try {
+          const resposta = await fetch(`${API_URL}/agendar`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nome, data, hora }),
+          });
+
+          const resultado = await resposta.json();
+
+          if (!resposta.ok) {
+            throw new Error(resultado.erro || 'Erro ao realizar agendamento.');
+          }
+
+          mostrarMensagem('\u2705 Agendamento realizado com sucesso!', 'sucesso');
+          form.reset();
+        } catch (erro) {
+          mostrarMensagem(erro.message || 'Não foi possível agendar.', 'erro');
+        }
+      }
+
+      aplicarTemaInicial();
+      themeToggle.addEventListener('click', alternarTema);
+      form.addEventListener('submit', enviarAgendamento);
+    </script>
+  </body>
+</html>
